@@ -34,7 +34,9 @@ app.post('/upload', function(req, res) {
 
         res.send(text);
 
-        fs.unlink(filename);
+        fs.unlink(filename, (err) => {
+            if (err) throw err;
+        });
     });
 
     // res.send("POST");
