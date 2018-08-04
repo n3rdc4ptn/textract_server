@@ -28,8 +28,7 @@ app.post('/upload', function(req, res) {
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         textract.fromFileWithPath(filename, {
-            "preserveLineBreaks": true,
-            "tesseract.lang": 'deu'
+            preserveLineBreaks: true
         }, function(err, text) {
             if (err) {
                 console.log(err);
