@@ -21,7 +21,7 @@ app.get('/upload', function(req, res) {
 app.post('/upload', function(req, res) {
     console.log(req.files); // the uploaded file object
 
-    var filename = "analysen/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
+    var filename = "tmp_files/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
     req.files.analysefile.mv(filename);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
