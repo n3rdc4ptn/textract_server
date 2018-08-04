@@ -1,5 +1,31 @@
+# Textract Server
+
+This is a Textract Server. It uses the node package textract to convert images, documents, PDFs to simple text using text recognition software from tesseract, pdftotext, ... .
+
+## Installation
+
+First clone this repo to your server
+
+`git clone git@gitlab.minest.de:n3rdc4ptn/textract-server.git`
+
+Now you must install the dependencies.
+
+`npm install`
+
+And you must install every dependency, used by textract, more you could read at the [textract](https://github.com/dbashford/textract#extraction-requirements) repo.
+
+
+## Usage
+
+Now you must start the server.
+
+`node server.js`
+
+And you could use it via ajax requests.
+
+```javascript
 $.ajax({
-    url: 'http://minest.ml:5000/upload',
+    url: 'SERVER_URL/upload',
     method: 'post',
     data: data,
     processData: false,
@@ -9,3 +35,4 @@ $.ajax({
         console.log(data);
     }
 });
+```
