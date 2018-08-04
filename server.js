@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 const fileUpload = require('express-fileupload');
 
+var fs = require('fs');
+
 app.use(fileUpload());
 
 
@@ -27,11 +29,14 @@ app.post('/upload', function(req, res) {
     textract.fromFileWithPath(filename, function(err, text) {
         if (err) {
             console.log(err);
-            return res.status(500).send(err);
+            res.status(500).send(err);
         }
 
-        return res.send(text);
+        res.send(text);
+
+        fs.unlink(filename);
     });
+
     // res.send("POST");
 });
 
