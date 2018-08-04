@@ -20,24 +20,29 @@ app.get('/upload', function(req, res) {
 
 app.post('/upload', function(req, res) {
     console.log(req.files); // the uploaded file object
-    var filename = "analysen/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
-    req.files.analysefile.mv(filename);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    textract.fromFileWithPath(filename, function(err, text) {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        }
+    if (req.files.length > 0) {
+        var filename = "analysen/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
+        req.files.analysefile.mv(filename);
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        textract.fromFileWithPath(filename, {
+            "preserveLineBreaks": true,
+            "tesseract.lang": 'deu'
+        }, function(err, text) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            }
 
-        res.send(text);
+            res.send(text);
 
-        fs.unlink(filename, (err) => {
-            if (err) throw err;
+            fs.unlink(filename, (err) => {
+                if (err) throw err;
+            });
         });
-    });
+    }
 
     // res.send("POST");
 });
