@@ -6,7 +6,7 @@ This is a Textract Server. It uses the node package textract to convert images, 
 
 First clone this repo to your server
 
-`git clone git@gitlab.minest.de:n3rdc4ptn/textract-server.git`
+`git clone git@github.com:n3rdc4ptn/textract-server.git`
 
 Now you must install the dependencies.
 
