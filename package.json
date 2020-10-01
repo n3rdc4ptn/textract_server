@@ -1,8 +1,11 @@
 {
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "blueimp-file-upload-node": "^2.1.0",
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "express-fileupload": "^0.4.0",
-    "textract": "^2.3.0"
+    "textract": "^2.5.0"
   }
 }
