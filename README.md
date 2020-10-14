@@ -2,6 +2,21 @@
 
 This is a Textract Server. It uses the node package textract to convert images, documents, PDFs to simple text using text recognition software from tesseract, pdftotext, ... .
 
+## Docker Image
+
+To run the docker image on your system, use the following command:
+
+```
+docker run -p 5000:5000 n3rdc4ptn/textract-server
+```
+
+You can use the environment variable `PDF_MAX_PAGES` to prevent pdfs longer than this to be uploaded:
+
+```
+docker run -p 5000:5000 -e PDF_MAX_PAGES=5 n3rdc4ptn/textract-server
+```
+
+
 ## Installation
 
 First clone this repo to your server
