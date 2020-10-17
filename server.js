@@ -10,7 +10,7 @@ function extractText(filename, res) {
     textract.fromFileWithPath(filename, {
         preserveLineBreaks: true,
         pdftotextOptions: {
-            lastPage: parseInt(process.env.PDF_MAX_PAGES)
+            lastPage: parseInt(process.env.PDF_MAX_PAGES || '5')
         },
         tesseract: {
             lang: process.env.TESSERACT_LANG || 'deu'
