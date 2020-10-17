@@ -11,6 +11,9 @@ function extractText(filename, res) {
         preserveLineBreaks: true,
         pdftotextOptions: {
             lastPage: parseInt(process.env.PDF_MAX_PAGES)
+        },
+        tesseract: {
+            lang: process.env.TESSERACT_LANG || 'deu'
         }
     }, function(err, text) {
         if (err) {
