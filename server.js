@@ -4,6 +4,8 @@ const fileUpload = require('express-fileupload');
 var textract = require('textract');
 var PDFINFO = require('pdfinfo');
 
+var cors = require('cors');
+
 var fs = require('fs');
 
 function extractText(filename, res) {
@@ -21,11 +23,12 @@ function extractText(filename, res) {
             res.status(500).send(err);
         }
 
-        fs.unlinkSync(filename);
         res.send(text);
+        fs.unlinkSync(filename);
     });
 }
 
+app.use(cors());
 app.use(fileUpload());
 
 app.post('/upload', function(req, res) {
@@ -33,10 +36,10 @@ app.post('/upload', function(req, res) {
 
     var filename = "tmp_files/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
     req.files.analysefile.mv(filename);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
 
     if (process.env.PDF_MAX_PAGES && req.files.analysefile.mimetype=="application/pdf") {
         var pdf = PDFINFO(filename);
