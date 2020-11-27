@@ -45,7 +45,7 @@ function extractTextFromPDF(filename, res) {
             var processor = pdf_extract(filename, {
                 type: 'ocr',
                 ocr_flags: [
-                    '-psm 1',       // automatically detect page orientation
+                    '--psm 1',       // automatically detect page orientation
                     '-l ' + (process.env.TESSERACT_LANG || 'deu'),       // use a custom language file                  
                 ]
             }, function(err) {
@@ -61,6 +61,7 @@ function extractTextFromPDF(filename, res) {
         
             processor.on('error', function(err) {
                 fs.unlinkSync(filename);
+                console.log(err);
                 res.status(500).send('error while extracting pages');
             });
         } else {
