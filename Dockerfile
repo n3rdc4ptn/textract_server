@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 RUN apt-get update
 
@@ -9,6 +9,8 @@ RUN apt-get install -y nodejs
 RUN apt-get install tesseract-ocr tesseract-ocr-deu libtesseract-dev -y
 RUN apt-get install antiword -y
 RUN apt-get install poppler-utils -y
+RUN apt-get install pdftk -y
+RUN apt-get install ghostscript -y
 
 
 WORKDIR /textract-server
