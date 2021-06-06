@@ -39,9 +39,11 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
           echo $VERSION
+          IMAGE_ID=n3rdc4ptn/textract-server:$VERSION
+      
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_ID
       
       - name: Push to Docker Hub
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: n3rdc4ptn/textract-server:$VERSION
+        run: |
+          docker push $IMAGE_ID
