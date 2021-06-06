@@ -8,6 +8,14 @@ var pdf_extract = require('pdf-extract');
 var cors = require('cors');
 var fs = require('fs');
 
+// Clean tmp_files on startup
+if (fs.existsSync('tmp_files')) {
+    fs.rmdirSync('tmp_files', {
+        recursive: true
+    });
+}
+fs.mkdirSync('tmp_files');
+
 
 const textractOptions = {
     preserveLineBreaks: true,
@@ -19,16 +27,21 @@ const textractOptions = {
     }
 };
 
+function removeFile(filename) {
+    fs.unlinkSync(filename)
+}
+
 function extractText(filename, res) {
     textract.fromFileWithPath(filename, textractOptions, function(err, text) {
         if (err) {
             console.log(err);
             res.status(500).send(err);
+            removeFile(filename)
             return;
         }
 
         res.send(text);
-        fs.unlinkSync(filename);
+        removeFile(filename)
     });
 }
 
@@ -36,7 +49,7 @@ function extractTextFromPDF(filename, res) {
     /* First try: using textract */
     textract.fromFileWithPath(filename, textractOptions, function(err, text) {
         if (err) {
-            fs.unlinkSync(filename);
+            removeFile(filename)
             res.status(500).send(err);
             return;
         }
@@ -55,18 +68,18 @@ function extractTextFromPDF(filename, res) {
             });
         
             processor.on('complete', function(data) {
-                fs.unlinkSync(filename);
                 res.send(data.text_pages.join( '\r\n ' ).trim());
+                removeFile(filename)
             });
         
             processor.on('error', function(err) {
-                fs.unlinkSync(filename);
                 console.log(err);
                 res.status(500).send('error while extracting pages');
+                removeFile(filename)
             });
         } else {
             res.send(text);
-            fs.unlinkSync(filename);
+            removeFile(filename)
         }
     });
 }
@@ -74,9 +87,9 @@ function extractTextFromPDF(filename, res) {
 app.use(cors());
 app.use(fileUpload());
 
-app.post('/upload', function(req, res) {
-    var filename = "tmp_files/" + req.files.analysefile.md5 + "_" + req.files.analysefile.name;
-    req.files.analysefile.mv(filename);
+app.post('/upload', async function(req, res) {
+    var filename = "tmp_files/" + req.files.analysefile.md5 + "_" + Date.now() + "_" + req.files.analysefile.name;
+    await req.files.analysefile.mv(filename);
 
     if (req.files.analysefile.mimetype=="application/pdf") {
         if (process.env.PDF_MAX_PAGES) {
@@ -86,7 +99,7 @@ app.post('/upload', function(req, res) {
                 if (meta.pages > parseInt(process.env.PDF_MAX_PAGES)) {
                     res.send("too-many-pages");
 
-                    fs.unlinkSync(filename);
+                    removeFile(filename)
                     return;
                 }
 
