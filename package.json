@@ -6,7 +6,7 @@
     "blueimp-file-upload-node": "^2.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.10",
+    "express-fileupload": "^1.2.1",
     "pdf-extract": "^1.0.11",
     "pdfinfo": "0.0.3",
     "textract": "^2.5.0"
