@@ -66,18 +66,18 @@ jobs:
         uses: docker/build-push-action@v6.5.0
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          #platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       # Only for public repositories
-      # - name: Attest
-      #   uses: actions/attest-build-provenance@v1
-      #   id: attest
-      #   with:
-      #     subject-name: ghcr.io/${{ github.repository }}
-      #     subject-digest: ${{ steps.push.outputs.digest }}
-      #     push-to-registry: true
+      - name: Attest
+        uses: actions/attest-build-provenance@v1
+        id: attest
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
 
